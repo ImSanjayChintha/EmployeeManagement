@@ -1,0 +1,25 @@
+﻿@model Employee
+@inject IEmployeeRepository empRepository
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<form asp-controller="home" asp-action="create" method="post">
+    <div>
+        <label asp-for="Name"></label>
+        <div>
+            <input asp-for="Name">
+        </div>
+    </div>
+
+    <div>
+        <button type="submit">Create</button>
+    </div>
+
+    <div>
+        Total Employees Count = @empRepository.GetAllEmployees().Count().ToString()
+    </div>
+</form>
