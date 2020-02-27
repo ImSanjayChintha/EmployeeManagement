@@ -12,9 +12,27 @@ namespace EmployeeManagement.Models
         {
             _employeeList = new List<Employee>()
             {
-                new Employee() { Id = 1, Name = "Mary", Department = "HR", Email = "mary@pragimtech.com" },
-                new Employee() { Id = 2, Name = "John", Department = "IT", Email = "john@pragimtech.com" },
-                new Employee() { Id = 3, Name = "Sam", Department = "IT", Email = "sam@pragimtech.com" },
+                new Employee() { 
+                    Id = 1, 
+                    Name = "Mary", 
+                    Department = Dept.IT, 
+                    Email = "mary@pragimtech.com", 
+                    PhotoPath="" 
+                },
+                new Employee() { 
+                    Id = 2, 
+                    Name = "John", 
+                    Department = Dept.Finance, 
+                    Email = "john@pragimtech.com", 
+                    PhotoPath="" 
+                },
+                new Employee() { 
+                    Id = 3, 
+                    Name = "Sam", 
+                    Department = Dept.Other, 
+                    Email = "sam@pragimtech.com",
+                    PhotoPath=""
+                }
 
             };
         }
@@ -36,5 +54,26 @@ namespace EmployeeManagement.Models
             return employee;
         }
 
+        public Employee Update(Employee updateEmployee)
+        {
+            Employee employee = _employeeList.FirstOrDefault(m => m.Id == updateEmployee.Id);
+            if (employee != null)
+            {
+                employee.Name=updateEmployee.Name;
+                employee.Email = updateEmployee.Email;
+                employee.Department = updateEmployee.Department;
+            }
+            return employee;
+        }
+
+        public Employee Delete(int id)
+        {
+            Employee employee = _employeeList.FirstOrDefault(m => m.Id == id);
+            if (employee != null)
+            {
+                _employeeList.Remove(employee);
+            }
+            return employee;
+        }
     }
 }
