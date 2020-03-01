@@ -2,6 +2,7 @@
 using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
@@ -10,12 +11,14 @@ namespace EmployeeManagement.Controllers
     public class HomeController:Controller
     {
         private IEmployeeRepository _employeeRepository;
+        private readonly ILogger logger;
         private readonly IWebHostEnvironment hostingEnvironment;
 
         public HomeController(IEmployeeRepository employeeRepository,
-                           IWebHostEnvironment hostingEnvironment)
+                           IWebHostEnvironment hostingEnvironment, ILogger<HomeController> logger )
         {
             _employeeRepository = employeeRepository;
+            this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
         }
 

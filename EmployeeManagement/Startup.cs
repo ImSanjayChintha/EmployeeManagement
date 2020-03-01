@@ -2,6 +2,7 @@ using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +22,25 @@ namespace EmployeeManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("EmployeeDBConnection")));
-            services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters(); ;
+            services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                                    .AddEntityFrameworkStores<AppDbContext>();
             //services.AddSingleton<IEmployeeRepository, SQLEmployeeRespository>();
-            services.AddScoped<IEmployeeRepository, SQLEmployeeRespository>();                                        
-            
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRespository>();
+            //services.Configure<IdentityOptions>(options =>
+            //{
+            //    options.Password.RequiredLength = 10;
+            //    options.Password.RequiredUniqueChars = 3;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //});
+
+            //services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            //{
+            //    options.Password.RequiredLength = 10;
+            //    options.Password.RequiredUniqueChars = 3;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //})
+            //.AddEntityFrameworkStores<AppDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +52,7 @@ namespace EmployeeManagement
             }
             else
             {
-                //app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 app.UseExceptionHandler("/Error");
             }
             app.UseStaticFiles();
@@ -47,6 +63,7 @@ namespace EmployeeManagement
             //    RequestPath = new PathString("/images")
             //});
             //app.UseRouting();
+            app.UseAuthentication();
             app.UseMvc(routes => { 
             
                     routes.MapRoute(name:"default",template: "{controller=Home}/{action=Index}/{id?}");
