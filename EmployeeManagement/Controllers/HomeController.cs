@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,7 @@ using System.IO;
 
 namespace EmployeeManagement.Controllers
 {
+    [Authorize]
     public class HomeController:Controller
     {
         private IEmployeeRepository _employeeRepository;
@@ -22,6 +24,7 @@ namespace EmployeeManagement.Controllers
             this.hostingEnvironment = hostingEnvironment;
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
            
