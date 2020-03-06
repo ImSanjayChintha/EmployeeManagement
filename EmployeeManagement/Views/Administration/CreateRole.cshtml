@@ -15,8 +15,14 @@
                 <input asp-for="RoleName" class="form-control" data-val-required="The Role Name is required." data-val="true" />
                 <span asp-validation-for="RoleName" class="text-danger"></span>
             </div>
-       
-            <button type="submit" class="btn btn-primary">Register</button>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary" style="width:auto">
+                        Create Role
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
