@@ -1,4 +1,5 @@
 using EmployeeManagement.Models;
+using EmployeeManagement.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,25 @@ namespace EmployeeManagement
                                     .AddEntityFrameworkStores<AppDbContext>();
             //services.AddSingleton<IEmployeeRepository, SQLEmployeeRespository>();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRespository>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role", "true"));
+
+                options.AddPolicy("EditRolePolicy",
+                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+
+                options.AddPolicy("AdminRolePolicy",
+                    policy => policy.RequireRole("Admin"));
+            });
+
+            services.AddSingleton<IAuthorizationHandler,
+                                CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+
+            // Register the second handler
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
+
             //services.Configure<IdentityOptions>(options =>
             //{
             //    options.Password.RequiredLength = 10;
